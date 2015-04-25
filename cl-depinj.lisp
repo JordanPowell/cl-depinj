@@ -37,7 +37,8 @@
 	   (apply #'get-instance-from-injection injection initargs))
 	  ((is-object-injection injection)
 	   (get-object-from-injection injection))
-	  (t (error "Bug - unusual replacement in injection table")))))
+	  ((null injection) nil)
+	  (t (error "Bug - unusual replacement in injection table: ~a" injection)))))
 
 
 (defun define-class-injection (symbol class-symbol)
@@ -54,6 +55,23 @@
     `(let ((,old-table (copy-hash-table *injection-table*)))
        (unwind-protect (progn ,@body)
 	 (setf *injection-table* ,old-table)))))
+
+
+(defvar *readtable-stack* nil)
+
+(defun inject-read-macro (stream char)
+  (declare (ignore char))
+  `(inject ',(read stream)))
+
+(defmacro enable-inject-character (&optional (character #\@))
+  `(eval-when (:compile-toplevel :load-toplevel :execute)
+     (push *readtable* *readtable-stack*)
+     (setq *readtable* (copy-readtable))
+     (set-macro-character ,character 'inject-read-macro)))
+
+(defmacro disable-inject-character ()
+  '(eval-when (:compile-toplevel :load-toplevel :execute)
+    (setq *readtable* (pop *readtable-stack*))))
 
 
 ;; Copied from alexandria@b1c6ee03c41e0db97989ae38e70da4d8263e09d1

@@ -29,6 +29,14 @@
     (assert-equal 2 (inject 'obj)))
   (assert-equal 1 (inject 'obj)))
 
+(enable-inject-character)
+
+(def-cldepinj-test test-read-macro-for-object-injection (ObjectInjectionSuite)
+  (define-object-injection 'obj 2)
+  (assert-equal 2 @obj))
+
+(disable-inject-character)
+
 
 (defsuite ClassInjectionSuite (CLDepinjSuite))
 
@@ -74,6 +82,16 @@
     (define-class-injection 'TestClass 'InnerClass)
     (assert-equal 'inner-value (val (inject 'TestClass))))
   (assert-equal 'outer-value (val (inject 'TestClass))))
+
+(enable-inject-character)
+
+(def-cldepinj-test test-read-macro-for-class-injection (ObjectInjectionSuite)
+  (defclass ExampleTestClass ()
+    ((val :initform 'example-value :reader val)))
+  (define-class-injection 'TestClass 'ExampleTestClass)
+  (assert-equal 'example-value (val @TestClass)))
+
+(disable-inject-character)
 
 
 (defun run-all-tests ()

@@ -5,5 +5,7 @@
   (:export #:define-class-injection
 	   #:define-object-injection 
 	   #:with-temporary-injections
-	   #:inject))
+	   #:inject
+	   #:enable-inject-character
+	   #:disable-inject-character))
 
