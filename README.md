@@ -7,13 +7,20 @@ A few 'dependency injection' helpers for CL
 Dependencies
 ============
 
-[clunit|https://github.com/tgutu/clunit] if you want to run the tests
+[clunit](https://github.com/tgutu/clunit) if you want to run the tests
 
 
 Documentation
 =============
 
-cl-depinj is basically a glorified global variable table with a handy read macro for easy access. It came about because I wanted to use different concrete instances/objects in different installations of my application and I was bored of lots of `(defparameter *blah-blah-class-name* 'FooClass) and `(make-instance *blah-blah-class-name*)` everywhere.
+cl-depinj is basically a glorified global variable table with a handy read macro for easy access. It came about because I wanted to use different concrete instances/objects in different installations of my application and I was bored of lots of this:
+
+    ;; config.lisp:
+    (defparameter *blah-blah-class-name* 'FooClass)
+
+    ;; everywhere else:
+    (make-instance *blah-blah-class-name*)
+
 
 I'm not sure if it really is dependency injection (or what that even means in a language as dynamic as lisp) but it feels nicer than what I had before.
 
@@ -87,16 +94,18 @@ Finally, you can establish temporary injections with `with-temporary-injections`
 
     > (with-temporary-injections
         (define-object-injection 'sort-predicate #'<)
-	(sort '(1 3 2) @sort-predicate))
+        (sort '(1 3 2) @sort-predicate))
     (1 2 3)
 
     > (sort '(1 3 2) @sort-predicate)
     (3 2 1)
 
+    > (disable-inject-character)
+
 Running the tests
 -----------------
 
-If you've got [clunit|https://github.com/tgutu/clunit] installed, once you load `cl-depinj-tests` you should just be able to `(cl-depinj-tests:run-all-tests)`
+If you've got [clunit](https://github.com/tgutu/clunit) installed, once you load `cl-depinj-tests` you should just be able to `(cl-depinj-tests:run-all-tests)`
 
 
 Why should I use it?
@@ -120,7 +129,7 @@ Maybe. It's working for me so far.
 The Latest Version
 ==================
 
-To the extent that I'm using versioning, this is version `0.1`. If I ever need to create another version, I promise to follow [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html).
+To the extent that I'm using versioning, this is version `0.2`. If I ever need to create another version, I promise to follow [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html).
 
 
 Installation
