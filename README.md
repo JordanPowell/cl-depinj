@@ -13,7 +13,7 @@ Dependencies
 Documentation
 =============
 
-cl-depinj is basically a glorified global variable table with a handy read macro for easy access. It came about because I wanted to use different concrete instances/objects in different installations of my application and I was bored of lots of this:
+cl-depinj is basically a glorified global variable table with a handy read macro for easy access. It came about after a discussion with a fellow programmer about how to use different concrete 'things' in different installations of an application; I was bored of lots of this:
 
     ;; config.lisp:
     (defparameter *blah-blah-class-name* 'FooClass)
